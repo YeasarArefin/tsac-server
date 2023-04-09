@@ -14,8 +14,8 @@ require('colors');
 // middleware
 app.use(express.json());
 app.use(cors());
-// end-points
 
+// end-points
 app.use('/api/v1/accounts', accounts);
 app.use('/api/v1/createaccount', createaccount);
 
