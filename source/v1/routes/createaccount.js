@@ -14,8 +14,8 @@ createaccount
         res.send('create account');
     })
     .post(async (req, res) => {
-        const { email, password, name, phone } = req.body;
-
+        const { email, password } = req.body;
+        console.log(req.body);
         admin.auth().createUser({
             email: email,
             password: password,
@@ -36,7 +36,6 @@ createaccount
             .catch((error) => {
                 console.error('Error creating new user:', error);
             });
-
 
     });
 module.exports = createaccount;
