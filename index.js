@@ -8,6 +8,8 @@ const db = require('./source/db/db.config');
 const accounts = require('./source/v1/routes/accounts');
 const createaccount = require('./source/v1/routes/createaccount');
 const admin = require('./source/utils/firebase/firebase.init');
+const invoice = require('./source/v1/routes/invoice');
+const dashboard = require('./source/v1/routes/dashboard');
 require('colors');
 
 
@@ -18,6 +20,8 @@ app.use(cors());
 // end-points
 app.use('/api/v1/accounts', accounts);
 app.use('/api/v1/createaccount', createaccount);
+app.use('/api/v1/invoice', invoice);
+app.use('/api/v1/dashboard', dashboard);
 
 app.get('/', (req, res) => {
     res.send(
