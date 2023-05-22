@@ -10,6 +10,7 @@ const createaccount = require('./source/v1/routes/createaccount');
 const admin = require('./source/utils/firebase/firebase.init');
 const invoice = require('./source/v1/routes/invoice');
 const dashboard = require('./source/v1/routes/dashboard');
+const expenditure = require('./source/v1/routes/expenditure');
 require('colors');
 
 
@@ -22,6 +23,7 @@ app.use('/api/v1/accounts', accounts);
 app.use('/api/v1/createaccount', createaccount);
 app.use('/api/v1/invoice', invoice);
 app.use('/api/v1/dashboard', dashboard);
+app.use('/api/v1/expenditure', expenditure);
 
 app.get('/', (req, res) => {
     res.send(
