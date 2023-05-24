@@ -17,7 +17,11 @@ dashboard
 			const currentYear = new Date().getFullYear();
 			const currentMonth = new Date().getMonth() + 1; // Months are zero-based, so add 1 to get the current month
 			const monthlyChart = [];
-			const yearlyChart = {};
+			const yearlyChart = {
+				year: 0,
+				income: 0,
+				expenditure: 0
+			};
 
 			// monthlyChart.push({
 			// 	"month": "2024-05",
@@ -103,17 +107,18 @@ dashboard
 				const [year] = entry.month.split("-");
 
 				// If the year entry doesn't exist, create it
-				if (!yearlyChart[year]) {
-					yearlyChart[year] = {
-						year: parseInt(year),
-						income: 0,
-						expenditure: 0,
-					};
-				}
+				// if (!yearlyChart) {
+				// 	yearlyChart = {
+				// 		year: parseInt(year),
+				// 		income: 0,
+				// 		expenditure: 0,
+				// 	};
+				// }
 
 				// Add the income and expenditure to the corresponding year
-				yearlyChart[year].income += entry.income;
-				yearlyChart[year].expenditure += entry.expenditure;
+				yearlyChart.year = year;
+				yearlyChart.income += entry.income;
+				yearlyChart.expenditure += entry.expenditure;
 			});
 
 
