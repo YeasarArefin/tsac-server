@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 const expenditureSchema = mongoose.Schema({
     amount: { type: Number, required: true },
-    description: { type: String, required: true }
+    title: { type: String, required: true },
+    description: { type: String, default: 'No description' }
 }, {
     timestamps: true
 });

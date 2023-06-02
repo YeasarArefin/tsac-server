@@ -1,18 +1,25 @@
 const accounts = require('express').Router();
+const verifyJWT = require('../../utils/middleware/verifyJWT');
 const accountsCollection = require('../models/accounts.model');
 require('colors');
 
 accounts
     .route('/')
-    .get(async (req, res) => {
+    .get(verifyJWT, async (req, res) => {
 
         const email = req.query.email;
         const role = req.query.role;
 
+        const decodedEmail = req.decoded.email;
+        if (decodedEmail !== process.env.ADMIN_EMAIL) {
+            return res.status(401).send({ message: 'unauthorized access' });
+        }
+
+
         if (email) {
 
             const data = await accountsCollection.find({ email });
-            res.status(200).send(data);
+            res.status(200).send([...data, req.decoded]);
 
         } else if (role) {
 
@@ -28,9 +35,12 @@ accounts
         }
 
     })
-    .post(async (req, res) => {
+    .post(verifyJWT, async (req, res) => {
 
-        console.log(req.body);
+        const decodedEmail = req.decoded.email;
+        if (decodedEmail !== process.env.ADMIN_EMAIL) {
+            return res.status(401).send({ message: 'unauthorized access' });
+        }
 
         try {
 

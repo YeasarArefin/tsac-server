@@ -1,12 +1,18 @@
+const verifyJWT = require('../../utils/middleware/verifyJWT');
 const accountsCollection = require('../models/accounts.model');
 const expenditureCollection = require('../models/expenditure.model');
 const invoiceCollection = require('../models/invoice.model');
-
 const dashboard = require('express').Router();
 
 dashboard
 	.route('/')
-	.get(async (req, res) => {
+	.get(verifyJWT, async (req, res) => {
+
+		const decodedEmail = req.decoded.email;
+		if (decodedEmail !== process.env.ADMIN_EMAIL) {
+			return res.status(401).send({ message: 'unauthorized access' });
+		}
+
 		try {
 			let totalIncome = 0;
 			let totalExpenditure = 0;
@@ -15,24 +21,13 @@ dashboard
 			const numberOfStudents = await accountsCollection.countDocuments({ role: "student" });
 			const numberOfTeachers = await accountsCollection.countDocuments({ role: "teacher" });
 			const currentYear = new Date().getFullYear();
-			const currentMonth = new Date().getMonth() + 1; // Months are zero-based, so add 1 to get the current month
+			const currentMonth = new Date().getMonth() + 1;
 			const monthlyChart = [];
 			const yearlyChart = {
 				year: 0,
 				income: 0,
 				expenditure: 0
 			};
-
-			// monthlyChart.push({
-			// 	"month": "2024-05",
-			// 	"income": 13517,
-			// 	"expenditure": 2500
-			// });
-			// monthlyChart.push({
-			// 	"month": "2024-09",
-			// 	"income": 13517,
-			// 	"expenditure": 100
-			// });
 
 			const perMonthIncome = await invoiceCollection.aggregate([
 				{
@@ -106,16 +101,6 @@ dashboard
 			monthlyChart.forEach((entry) => {
 				const [year] = entry.month.split("-");
 
-				// If the year entry doesn't exist, create it
-				// if (!yearlyChart) {
-				// 	yearlyChart = {
-				// 		year: parseInt(year),
-				// 		income: 0,
-				// 		expenditure: 0,
-				// 	};
-				// }
-
-				// Add the income and expenditure to the corresponding year
 				yearlyChart.year = year;
 				yearlyChart.income += entry.income;
 				yearlyChart.expenditure += entry.expenditure;
