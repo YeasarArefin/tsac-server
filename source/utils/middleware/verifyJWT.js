@@ -6,8 +6,8 @@ const verifyJWT = (req, res, next) => {
     if (!authHeader) {
         return res.status(401).send({ message: 'unauthorized access' });
     }
-    const token = authHeader.split(' ')[1];
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    const accessToken = authHeader.split(' ')[1];
+    jwt.verify(accessToken, process.env.JWT_SECRET, (err, decoded) => {
         if (err) {
             return res.status(401).send({ message: 'unauthorized access' });
         }

@@ -12,7 +12,7 @@ accounts
 
         const decodedEmail = req.decoded.email;
         if (decodedEmail !== process.env.ADMIN_EMAIL) {
-            return res.status(401).send({ message: 'unauthorized access' });
+            return res.status(401).send({ message: 'unauthorized access', decoded: req.decoded });
         }
 
 
